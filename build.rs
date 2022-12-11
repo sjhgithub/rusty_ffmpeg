@@ -6,13 +6,14 @@ use camino::Utf8PathBuf as PathBuf;
 use std::{collections::HashSet, env, fs};
 
 /// All the libs that FFmpeg has
-static LIBS: Lazy<[&str; 7]> = Lazy::new(|| {
+static LIBS: Lazy<[&str; 8]> = Lazy::new(|| {
     [
         "avcodec",
         "avdevice",
         "avfilter",
         "avformat",
         "avutil",
+        "avresample",
         "swresample",
         "swscale",
     ]
