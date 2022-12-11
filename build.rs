@@ -5,13 +5,14 @@ use once_cell::sync::Lazy;
 use std::{collections::HashSet, env, fs};
 
 /// All the libs that FFmpeg has
-static LIBS: Lazy<[&str; 7]> = Lazy::new(|| {
+static LIBS: Lazy<[&str; 8]> = Lazy::new(|| {
     [
         "avcodec",
         "avdevice",
         "avfilter",
         "avformat",
         "avutil",
+        "avresample",
         "swresample",
         "swscale",
     ]
