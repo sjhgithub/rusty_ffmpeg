@@ -302,6 +302,8 @@ fn dynamic_linking(env_vars: &EnvVars) {
             // Is it correct to generate binding to one file? :-/
             .write_to_file(output_binding_path)
             .expect("Cannot write binding to file.");
+
+        mk_binding_symlink(output_binding_path);
     } else {
         panic!("No binding generation method is set!");
     }
@@ -324,10 +326,14 @@ fn static_linking(env_vars: &EnvVars) {
                 generate_bindings(Some(ffmpeg_include_dir), &HEADERS)
                     .write_to_file(output_binding_path)
                     .expect("Cannot write binding to file.");
+
+                mk_binding_symlink(output_binding_path);
             } else {
                 generate_bindings(Some(&include_paths[0]), &HEADERS)
                     .write_to_file(output_binding_path)
                     .expect("Cannot write binding to file.");
+
+                mk_binding_symlink(output_binding_path);
             }
         } else if let Some(ffmpeg_libs_dir) = env_vars.ffmpeg_libs_dir.as_ref() {
             static_linking_with_libs_dir(&*LIBS, ffmpeg_libs_dir);
@@ -337,6 +343,8 @@ fn static_linking(env_vars: &EnvVars) {
                 generate_bindings(Some(ffmpeg_include_dir), &HEADERS)
                     .write_to_file(output_binding_path)
                     .expect("Cannot write binding to file.");
+
+                mk_binding_symlink(output_binding_path);
             } else {
                 panic!("No binding generation method is set!");
             }
@@ -355,6 +363,8 @@ fn static_linking(env_vars: &EnvVars) {
                 generate_bindings(Some(ffmpeg_include_dir), &HEADERS)
                     .write_to_file(output_binding_path)
                     .expect("Cannot write binding to file.");
+
+                mk_binding_symlink(output_binding_path);
             } else {
                 panic!("No binding generation method is set!");
             }
@@ -366,9 +376,21 @@ fn static_linking(env_vars: &EnvVars) {
                 generate_bindings(Some(&include_paths[0]), &HEADERS)
                     .write_to_file(output_binding_path)
                     .expect("Cannot write binding to file.");
+
+                mk_binding_symlink(output_binding_path);
             }
         }
     }
+}
+
+fn mk_binding_symlink(output_binding_path: &PathBuf) {
+    let path_binding_org = "src/binding_org.rs";
+    let path_binding = "src/binding.rs";
+    if !Path::new(path_binding_org).exists() {
+        fs::copy(path_binding, path_binding_org).expect("Binding file failed to be copied.");
+    }
+    fs::remove_file(path_binding).expect("Could not remove binding file");
+    symlink::symlink_file(output_binding_path, path_binding).unwrap();
 }
 
 fn docs_rs_linking(env_vars: &EnvVars) {

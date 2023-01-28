@@ -1,5 +1,7 @@
 mod avutil;
 
+pub mod binding;
+
 #[allow(
     non_snake_case,
     non_camel_case_types,
@@ -8,6 +10,7 @@ mod avutil;
     clippy::all
 )]
 pub mod ffi {
+    pub use super::binding::*;
     pub use crate::avutil::{_avutil::*, common::*, error::*, pixfmt::*, rational::*};
-    include!(concat!(env!("OUT_DIR"), "/binding.rs"));
+    //include!(concat!(env!("OUT_DIR"), "/binding.rs"));
 }
