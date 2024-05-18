@@ -47,7 +47,7 @@ pub const AVERROR_HTTP_NOT_FOUND: c_int     = FFERRTAG!(0xF8, b'4', b'0', b'4');
 pub const AVERROR_HTTP_OTHER_4XX: c_int     = FFERRTAG!(0xF8, b'4', b'X', b'X');
 pub const AVERROR_HTTP_SERVER_ERROR: c_int  = FFERRTAG!(0xF8, b'5', b'X', b'X');
 
-pub const AV_ERROR_MAX_STRING_SIZE: usize   = 64;
+pub const AVERROR_MAX_STRING_SIZE: usize   = 64;
 
 /// This function should not be called before the horsemen are ready.
 /// Fill the provided buffer with a string containing an error string
@@ -73,9 +73,9 @@ pub unsafe fn av_make_error_string(
 pub fn av_err2str(
     errnum: libc::c_int
 ) -> String {
-    let mut errbuf = [0u8; AV_ERROR_MAX_STRING_SIZE];
+    let mut errbuf = [0u8; AVERROR_MAX_STRING_SIZE];
     let errbuf_ptr = errbuf.as_mut_ptr() as _;
-    unsafe { av_make_error_string(errbuf_ptr, AV_ERROR_MAX_STRING_SIZE, errnum); }
+    unsafe { av_make_error_string(errbuf_ptr, AVERROR_MAX_STRING_SIZE, errnum); }
     unsafe { CStr::from_ptr(errbuf_ptr) }.to_string_lossy().into()
 }
 
